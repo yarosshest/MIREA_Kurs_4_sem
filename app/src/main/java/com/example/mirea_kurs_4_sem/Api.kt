@@ -12,6 +12,6 @@ interface Api {
     fun register(
         @Query("log") login: String,
         @Query("password") password: String,
-        ): Call<Int>?
+        ): Int
 
 }
