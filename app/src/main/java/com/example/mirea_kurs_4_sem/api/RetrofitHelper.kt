@@ -1,11 +1,11 @@
-package com.example.mirea_kurs_4_sem
+package com.example.mirea_kurs_4_sem.api
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitHelper {
 
-    val BASE_URL = "http://api.example.com/"
+    val BASE_URL = "http://172.29.192.1:8031/"
 
     fun getInstance(): Retrofit {
         return  Retrofit.Builder()
