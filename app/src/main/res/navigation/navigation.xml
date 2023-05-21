@@ -7,12 +7,25 @@
 
     <fragment
         android:id="@+id/findFragment"
-        android:name="com.example.mirea_kurs_4_sem.FindFragment"
+        android:name="com.example.mirea_kurs_4_sem.find.FindFragment"
         android:label="fragment_find"
-        tools:layout="@layout/fragment_find" />
+        tools:layout="@layout/fragment_find" >
+        <action
+            android:id="@+id/action_findFragment_to_productFragment"
+            app:destination="@id/productFragment" >
+            <argument
+                android:name="id_film"
+                app:argType="integer"
+                />
+        </action>
+    </fragment>
     <fragment
         android:id="@+id/productFragment"
         android:name="com.example.mirea_kurs_4_sem.ProductFragment"
         android:label="fragment_product"
-        tools:layout="@layout/fragment_product" />
+        tools:layout="@layout/fragment_product" >
+        <argument
+            android:name="id_film"
+            app:argType="integer" />
+    </fragment>
 </navigation>

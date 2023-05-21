@@ -21,4 +21,15 @@ interface Api {
         @Query("password") password: String,
     ): Call<Map<String,Int>>
 
+    @GET("find")
+    fun find(
+        @Query("line") line: String
+    ): Call<List<Film>>
+
+    @GET("get_film")
+    fun get_film(
+        @Query("prod_id") id: Int
+    ): Call<Film>
+
+
 }
