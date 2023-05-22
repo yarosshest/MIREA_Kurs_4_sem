@@ -31,5 +31,11 @@ interface Api {
         @Query("prod_id") id: Int
     ): Call<Film>
 
+    @POST("rate")
+    fun rate(
+        @Query("prod_id") id: Int,
+        @Query("user_rate") rate: Boolean,
+    ): Call<String>
+
 
 }

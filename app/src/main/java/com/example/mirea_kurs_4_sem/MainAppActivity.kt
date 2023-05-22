@@ -24,10 +24,6 @@ class MainAppActivity : AppCompatActivity() {
                     return@setOnItemSelectedListener true
                 }
 
-                R.id.product -> {
-                    navController.navigate(R.id.productFragment)
-                    return@setOnItemSelectedListener true
-                }
 
                 else -> {false}
             }

@@ -7,11 +7,4 @@
         android:orderInCategory="1"
         />
 
-    <item
-        android:id='@+id/product'
-        android:icon="@drawable/baseline_recommend_24"
-        android:title="Продукт"
-        android:orderInCategory="2"
-        />
-
 </menu>

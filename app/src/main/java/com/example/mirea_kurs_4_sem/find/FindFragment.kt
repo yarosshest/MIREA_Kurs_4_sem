@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
@@ -39,7 +40,6 @@ class FindFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
 
         val search = view.findViewById<SearchView>(R.id.searchName)

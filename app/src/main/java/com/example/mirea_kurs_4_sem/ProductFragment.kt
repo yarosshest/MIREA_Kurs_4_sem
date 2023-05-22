@@ -1,12 +1,15 @@
 package com.example.mirea_kurs_4_sem
 
 import android.os.Bundle
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.mirea_kurs_4_sem.api.Api
 import com.example.mirea_kurs_4_sem.api.Film
@@ -31,8 +34,22 @@ class ProductFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val likeButton : ImageButton = view.findViewById(R.id.imageButtonDislike)
+        val dislikeButton : ImageButton = view.findViewById(R.id.imageButtonLike)
+
+
         val api = RetrofitHelper.getInstance().create(Api::class.java)
         if (arguments != null) {
+            val id = requireArguments().getInt("id_film")
+
+            likeButton.setOnClickListener {
+                rateFilm(true, id)
+            }
+
+            dislikeButton.setOnClickListener {
+                rateFilm(false, id)
+            }
+
             val photo : ImageView = view.findViewById(R.id.imageViewProduct)
             val description : TextView = view.findViewById(R.id.textViewDescription)
             val call = api.get_film(
@@ -65,6 +82,43 @@ class ProductFragment : Fragment() {
 
             })
         }
+    }
+
+    private fun rateFilm(rate: Boolean, id: Int){
+        val api = RetrofitHelper.getInstance().create(Api::class.java)
+        val call = api.rate(
+            id = id,
+            rate = rate
+        )
+
+        call.enqueue(object : Callback<String> {
+            override fun onResponse(
+                call: Call<String>,
+                response: Response<String>
+            ) {
+                if (response.isSuccessful) {
+                    val body = response.body()
+                    val duration = Toast.LENGTH_SHORT
+                    if (body != null) {
+
+                        val toast = Toast.makeText(context, "Оценено", duration)
+                        toast.setGravity(Gravity.BOTTOM, 0, 0)
+                        toast.show()
+                    } else {
+                        if (response.code() == 404) {
+                            val toast = Toast.makeText(context, "Ошибка сервиса", duration)
+                            toast.setGravity(Gravity.BOTTOM, 0, 0)
+                            toast.show()
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                println("Network Error :: " + t.localizedMessage);
+            }
+
+        })
     }
 
 }
