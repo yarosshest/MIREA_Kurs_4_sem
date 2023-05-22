@@ -12,11 +12,10 @@
         tools:layout="@layout/fragment_find" >
         <action
             android:id="@+id/action_findFragment_to_productFragment"
-            app:destination="@id/productFragment" >
+            app:destination="@id/productFragment">
             <argument
                 android:name="id_film"
-                app:argType="integer"
-                />
+                app:argType="integer" />
         </action>
     </fragment>
     <fragment
@@ -27,5 +26,17 @@
         <argument
             android:name="id_film"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_productFragment_to_findFragment"
+            app:destination="@id/findFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recommendationFragment"
+        android:name="com.example.mirea_kurs_4_sem.RecommendationFragment"
+        android:label="fragment_recommendation"
+        tools:layout="@layout/fragment_recommendation" >
+        <action
+            android:id="@+id/action_recommendationFragment_to_productFragment"
+            app:destination="@id/productFragment" />
     </fragment>
 </navigation>

@@ -2,6 +2,7 @@ package com.example.mirea_kurs_4_sem.api
 
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Query
 import java.util.Dictionary
@@ -37,5 +38,9 @@ interface Api {
         @Query("user_rate") rate: Boolean,
     ): Call<String>
 
+
+    @GET("get_recommendations")
+    fun get_recommendations(
+    ): Call<List<Film>>
 
 }

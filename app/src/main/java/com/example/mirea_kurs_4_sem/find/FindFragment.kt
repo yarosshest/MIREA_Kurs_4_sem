@@ -1,29 +1,29 @@
 package com.example.mirea_kurs_4_sem.find
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.SearchView
+import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mirea_kurs_4_sem.R
 import com.example.mirea_kurs_4_sem.api.Api
 import com.example.mirea_kurs_4_sem.api.Film
 import com.example.mirea_kurs_4_sem.api.RetrofitHelper
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+
 class FindFragment : Fragment() {
+    private lateinit var saveAdapter : FilmAdapter
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,11 +41,26 @@ class FindFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val textError : TextView = view.findViewById(R.id.textError)
 
         val search = view.findViewById<SearchView>(R.id.searchName)
 
         val listFilm = view.findViewById<RecyclerView>(R.id.listFilm)
         listFilm.layoutManager = LinearLayoutManager(context)
+
+        if (this::saveAdapter.isInitialized){
+            saveAdapter.setOnClickListener(object :
+                FilmAdapter.OnClickListener {
+                override fun onClick(position: Int, model: Film) {
+                    val bundle = bundleOf("id_film" to model.id)
+                    view.findNavController().navigate(
+                        R.id.action_findFragment_to_productFragment,
+                        bundle
+                    )
+                }
+            })
+            listFilm.adapter = saveAdapter
+        }
 
         val api = RetrofitHelper.getInstance().create(Api::class.java)
 
@@ -61,7 +76,6 @@ class FindFragment : Fragment() {
                                 val films = response.body()
                                 if (films != null) {
                                     val adapter = FilmAdapter(films)
-                                    listFilm.adapter = adapter
                                     adapter.setOnClickListener(object :
                                         FilmAdapter.OnClickListener {
                                         override fun onClick(position: Int, model: Film) {
@@ -73,7 +87,11 @@ class FindFragment : Fragment() {
                                         }
                                     })
                                     listFilm.adapter = adapter
+                                    saveAdapter = adapter
                                 }
+                            }else if (response.code() == 404){
+                                textError.text = "Films not found"
+                                textError.visibility = View.VISIBLE
                             }
                         }
 
@@ -91,10 +109,5 @@ class FindFragment : Fragment() {
         })
     }
 
-    fun onClick(view: View) {
-        val film: Film = view.tag as Film
-        val bundle = bundleOf("id_film" to film.id)
-        view.findNavController().navigate(R.id.action_findFragment_to_productFragment, bundle)
-    }
 
 }

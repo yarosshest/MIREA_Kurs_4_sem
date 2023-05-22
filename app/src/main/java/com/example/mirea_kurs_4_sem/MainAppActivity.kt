@@ -24,6 +24,11 @@ class MainAppActivity : AppCompatActivity() {
                     return@setOnItemSelectedListener true
                 }
 
+                R.id.recommendation -> {
+                    navController.navigate(R.id.recommendationFragment)
+                    return@setOnItemSelectedListener true
+                }
+
 
                 else -> {false}
             }
