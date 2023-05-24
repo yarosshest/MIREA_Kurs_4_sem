@@ -10,6 +10,9 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.FragmentManager
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.example.mirea_kurs_4_sem.api.Api
 import com.example.mirea_kurs_4_sem.api.Film
@@ -44,10 +47,13 @@ class ProductFragment : Fragment() {
 
             likeButton.setOnClickListener {
                 rateFilm(true, id)
+                view.findNavController().popBackStack()
+
             }
 
             dislikeButton.setOnClickListener {
                 rateFilm(false, id)
+                view.findNavController().popBackStack()
             }
 
             val photo : ImageView = view.findViewById(R.id.imageViewProduct)

@@ -12,7 +12,8 @@
         tools:layout="@layout/fragment_find" >
         <action
             android:id="@+id/action_findFragment_to_productFragment"
-            app:destination="@id/productFragment">
+            app:destination="@id/productFragment"
+            app:popUpTo="@id/findFragment">
             <argument
                 android:name="id_film"
                 app:argType="integer" />
@@ -26,9 +27,6 @@
         <argument
             android:name="id_film"
             app:argType="integer" />
-        <action
-            android:id="@+id/action_productFragment_to_findFragment"
-            app:destination="@id/findFragment" />
     </fragment>
     <fragment
         android:id="@+id/recommendationFragment"
@@ -37,6 +35,7 @@
         tools:layout="@layout/fragment_recommendation" >
         <action
             android:id="@+id/action_recommendationFragment_to_productFragment"
-            app:destination="@id/productFragment" />
+            app:destination="@id/productFragment"
+            app:popUpTo="@id/recommendationFragment" />
     </fragment>
 </navigation>

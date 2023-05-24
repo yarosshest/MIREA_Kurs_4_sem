@@ -60,6 +60,10 @@ dependencies {
             because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
         }
     }
+
+    dependencies {
+        implementation 'com.github.bumptech.glide:glide:4.15.1'
+    }
     implementation ("com.github.bumptech.glide:recyclerview-integration:4.14.2") {
         // Excludes the support library because it's already included by Glide.
         transitive = false
