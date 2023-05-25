@@ -37,8 +37,8 @@ class ProductFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val likeButton : ImageButton = view.findViewById(R.id.imageButtonDislike)
-        val dislikeButton : ImageButton = view.findViewById(R.id.imageButtonLike)
+        val likeButton : ImageButton = view.findViewById(R.id.imageButtonLike)
+        val dislikeButton : ImageButton = view.findViewById(R.id.imageButtonDislike)
 
 
         val api = RetrofitHelper.getInstance().create(Api::class.java)
