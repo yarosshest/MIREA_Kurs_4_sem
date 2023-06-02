@@ -29,6 +29,11 @@ class MainAppActivity : AppCompatActivity() {
                     return@setOnItemSelectedListener true
                 }
 
+                R.id.timer -> {
+                    navController.navigate(R.id.timerFragment)
+                    return@setOnItemSelectedListener true
+                }
+
 
                 else -> {false}
             }

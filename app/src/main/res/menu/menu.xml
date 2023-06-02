@@ -14,4 +14,11 @@
         android:orderInCategory="2"
         />
 
+    <item
+        android:id='@+id/timer'
+        android:icon="@drawable/baseline_timer"
+        android:title="Таймер"
+        android:orderInCategory="3"
+        />
+
 </menu>
