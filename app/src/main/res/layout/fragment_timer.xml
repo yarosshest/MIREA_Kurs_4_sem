@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center_horizontal|center_vertical"
-        android:onClick="onTimeClick"
+        android:clickable="true"
         android:text="0:30"
         android:textSize="36sp"
         android:textStyle="bold"

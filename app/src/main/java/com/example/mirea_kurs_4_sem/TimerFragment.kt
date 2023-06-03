@@ -68,8 +68,7 @@ class TimerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val textView : TextView = view.findViewById(R.id.textView)
-
-
+        textView.setOnClickListener(onTimeClicklistener)
 
 
         timer = object : CountDownTimer(3000, 1000) {
@@ -121,17 +120,21 @@ class TimerFragment : Fragment() {
         notificationManager.createNotificationChannel(channel)
     }
 
-    fun onTimeClick(view: View) {
-        val picker =
-            MaterialTimePicker.Builder()
-                .setTimeFormat(TimeFormat.CLOCK_12H)
-                .setHour(12)
-                .setMinute(10)
-                .setTitleText("Select Appointment time")
-                .build()
 
-        fragmentManager?.let { picker.show(it, "tag") };
+    val onTimeClicklistener= View.OnClickListener { view ->
+        when (view.id) {
+            R.id.textView -> {
+                val picker =
+                    MaterialTimePicker.Builder()
+                        .setTimeFormat(TimeFormat.CLOCK_12H)
+                        .setHour(12)
+                        .setMinute(10)
+                        .setTitleText("Select Appointment time")
+                        .build()
+
+                fragmentManager?.let { picker.show(it, "tag") }
+            }
+        }
     }
-
 
 }
