@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/timerFragment"
-        android:name="com.example.mirea_kurs_4_sem.TimerFragment"
+        android:name="com.example.mirea_kurs_4_sem.timer.TimerFragment"
         android:label="fragment_timer"
         tools:layout="@layout/fragment_timer" />
 </navigation>
