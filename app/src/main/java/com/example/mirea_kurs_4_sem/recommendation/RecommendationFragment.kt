@@ -10,6 +10,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +19,8 @@ import com.example.mirea_kurs_4_sem.R
 import com.example.mirea_kurs_4_sem.api.Api
 import com.example.mirea_kurs_4_sem.api.Film
 import com.example.mirea_kurs_4_sem.api.RetrofitHelper
+import com.example.mirea_kurs_4_sem.databinding.FragmentRecommendationBinding
+import com.example.mirea_kurs_4_sem.databinding.FragmentTimerBinding
 import com.example.mirea_kurs_4_sem.find.FilmAdapter
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,30 +30,63 @@ import retrofit2.Response
 class RecommendationFragment : Fragment() {
     private lateinit var saveAdapter : FilmAdapter
 
+
     private val viewModel: AppViewModel by activityViewModels()
+
+    private lateinit var binding: FragmentRecommendationBinding
+
+    private lateinit var getButton: Button
+    private lateinit var bar: ProgressBar
+    private lateinit var textError: TextView
+    private lateinit var listFilm: RecyclerView
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        binding = FragmentRecommendationBinding.inflate(layoutInflater)
+
+        getButton  = binding.buttonRecommindations
+        bar = binding.progressBar
+        textError = binding.textError
+        listFilm = binding.listFilm
+    }
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_recommendation, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val getButton : Button = view.findViewById(R.id.buttonRecommindations)
+        listFilm.layoutManager = GridLayoutManager(context, 3)
 
-        val bar : ProgressBar = view.findViewById(R.id.progressBar)
-
-        val textError : TextView = view.findViewById(R.id.textError)
 
         val savedFilms = viewModel.getRecommendList()
 
-        val listFilm = view.findViewById<RecyclerView>(R.id.listFilm)
-        listFilm.layoutManager = GridLayoutManager(context, 3)
+
+        val recyclerViewObserver = Observer<List<Film>> {
+            val adapter = createAdapter(it)
+            listFilm.adapter = adapter
+            getButton.visibility = View.VISIBLE
+            bar.visibility = View.GONE
+        }
+
+
+        viewModel.getObserveRecommendList().observe(viewLifecycleOwner, recyclerViewObserver)
+
+        val searching = viewModel.getStatusRecommendService()
+
+        if (searching == true) {
+            getButton.visibility = View.GONE
+            bar.visibility = View.VISIBLE
+        }
+
 
         if (this::saveAdapter.isInitialized){
             saveAdapter.setOnClickListener(object :
@@ -71,6 +107,7 @@ class RecommendationFragment : Fragment() {
 
 
         getButton.setOnClickListener {
+            viewModel.saveStatusRecommendService(true)
             bar.visibility = View.VISIBLE
             getButton.visibility = View.GONE
 
@@ -79,6 +116,7 @@ class RecommendationFragment : Fragment() {
 
             call.enqueue(object : Callback<List<Film>>{
                 override fun onResponse(call: Call<List<Film>>, response: Response<List<Film>>) {
+                    viewModel.saveStatusRecommendService(false)
                     bar.visibility = View.GONE
                     getButton.visibility = View.VISIBLE
                     if (response.isSuccessful) {
@@ -107,7 +145,7 @@ class RecommendationFragment : Fragment() {
         }
     }
 
-    private fun createAdapter(films : List<Film>) : FilmAdapter{
+     fun createAdapter(films : List<Film>) : FilmAdapter{
         val adapter = FilmAdapter(films)
         adapter.setOnClickListener(object :
             FilmAdapter.OnClickListener {

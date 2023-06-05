@@ -1,5 +1,6 @@
 package com.example.mirea_kurs_4_sem
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mirea_kurs_4_sem.api.Film
@@ -10,18 +11,31 @@ class AppViewModel: ViewModel()  {
     private val findList = MutableLiveData<List<Film>>()
     private val recommendList = MutableLiveData<List<Film>>()
 
-    fun saveFindList(ad : List<Film>){
-        findList.value = ad
+    private val statusRecommendService = MutableLiveData(false)
+
+    fun saveFindList(list : List<Film>){
+        findList.value = list
     }
     fun getFindList() : List<Film>? {
         return findList.value
     }
 
-    fun saveRecommendList(ad : List<Film>){
-        recommendList.value = ad
+    fun saveRecommendList(list : List<Film>){
+        recommendList.value = list
     }
     fun getRecommendList() : List<Film>? {
         return recommendList.value
+    }
+
+    fun saveStatusRecommendService(flag : Boolean){
+        statusRecommendService.value = flag
+    }
+    fun getStatusRecommendService() : Boolean? {
+        return statusRecommendService.value
+    }
+
+    fun getObserveRecommendList() : LiveData<List<Film>> {
+        return recommendList
     }
 
 }
