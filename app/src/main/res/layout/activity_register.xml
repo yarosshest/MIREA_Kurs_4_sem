@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".aftorization.Register">
 
-    <EditText
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/edittTextTextLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <EditText
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/editTextTextPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,6 +31,7 @@
 
 
     <Button
+        style="@style/Widget.Material3.Button.ElevatedButton.Icon"
         android:id="@+id/buttonRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

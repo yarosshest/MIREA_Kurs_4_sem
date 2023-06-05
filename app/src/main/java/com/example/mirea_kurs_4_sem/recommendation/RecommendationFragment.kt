@@ -1,4 +1,4 @@
-package com.example.mirea_kurs_4_sem
+package com.example.mirea_kurs_4_sem.recommendation
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,15 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.example.mirea_kurs_4_sem.AppViewModel
+import com.example.mirea_kurs_4_sem.R
 import com.example.mirea_kurs_4_sem.api.Api
 import com.example.mirea_kurs_4_sem.api.Film
 import com.example.mirea_kurs_4_sem.api.RetrofitHelper
@@ -26,6 +26,8 @@ import retrofit2.Response
 
 class RecommendationFragment : Fragment() {
     private lateinit var saveAdapter : FilmAdapter
+
+    private val viewModel: AppViewModel by activityViewModels()
 
 
     override fun onCreateView(
@@ -45,8 +47,10 @@ class RecommendationFragment : Fragment() {
 
         val textError : TextView = view.findViewById(R.id.textError)
 
+        val savedFilms = viewModel.getRecommendList()
+
         val listFilm = view.findViewById<RecyclerView>(R.id.listFilm)
-        listFilm.layoutManager = LinearLayoutManager(context)
+        listFilm.layoutManager = GridLayoutManager(context, 3)
 
         if (this::saveAdapter.isInitialized){
             saveAdapter.setOnClickListener(object :
@@ -60,6 +64,9 @@ class RecommendationFragment : Fragment() {
                 }
             })
             listFilm.adapter = saveAdapter
+        }else if (savedFilms != null){
+            val adapter = createAdapter(savedFilms)
+            listFilm.adapter = adapter
         }
 
 
@@ -77,19 +84,10 @@ class RecommendationFragment : Fragment() {
                     if (response.isSuccessful) {
                         val films = response.body()
                         if (films != null) {
-                            val adapter = FilmAdapter(films)
-                            adapter.setOnClickListener(object :
-                                FilmAdapter.OnClickListener {
-                                override fun onClick(position: Int, model: Film) {
-                                    val bundle = bundleOf("id_film" to model.id)
-                                    view.findNavController().navigate(
-                                        R.id.action_recommendationFragment_to_productFragment,
-                                        bundle
-                                    )
-                                }
-                            })
+                            val adapter = createAdapter(films)
                             listFilm.adapter = adapter
                             saveAdapter = adapter
+                            viewModel.saveRecommendList(films)
                         }
                     } else if (response.code() == 405) {
                         textError.text = "Less 2 positive rates"
@@ -107,6 +105,21 @@ class RecommendationFragment : Fragment() {
                 }
             })
         }
+    }
+
+    private fun createAdapter(films : List<Film>) : FilmAdapter{
+        val adapter = FilmAdapter(films)
+        adapter.setOnClickListener(object :
+            FilmAdapter.OnClickListener {
+            override fun onClick(position: Int, model: Film) {
+                val bundle = bundleOf("id_film" to model.id)
+                view?.findNavController()?.navigate(
+                    R.id.action_recommendationFragment_to_productFragment,
+                    bundle
+                )
+            }
+        })
+        return adapter
     }
 
 }

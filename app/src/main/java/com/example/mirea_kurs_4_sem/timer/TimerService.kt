@@ -21,6 +21,14 @@ class TimerService : Service() {
 
     private lateinit var timer : CountDownTimer
 
+    companion object {
+        const val COUNTDOWN_BR = "com.example.mirea_kurs_4_sem.timer"
+        val intent = Intent(COUNTDOWN_BR)
+        const val NOTIFICATION_ID = 101
+        const val CHANNEL_ID = "1"
+        private val TAG = "TimerService"
+    }
+
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val intentNotification = Intent(applicationContext, TimerFragment::class.java)
@@ -43,16 +51,14 @@ class TimerService : Service() {
         val millis : Long = intent!!.getLongExtra("time", 3000)
 
 
-        timer = object : CountDownTimer(millis, 1000){
+        timer = object : CountDownTimer(millis, 100){
             override fun onTick(millisUntilFinished: Long) {
-                Log.i(TAG,"Countdown seconds remaining:" + millisUntilFinished / 1000)
                 Companion.intent.putExtra("countdown",millisUntilFinished);
                 sendBroadcast(Companion.intent);
             }
 
             override fun onFinish() {
                 createNotificationChannel()
-                Log.i(TAG,"Countdown finish")
                 Companion.intent.putExtra("countdown",0)
                 sendBroadcast(Companion.intent);
                 with(applicationContext.let { NotificationManagerCompat.from(it) }) {
@@ -74,14 +80,12 @@ class TimerService : Service() {
             }
         }
         timer.start()
-        Log.i(TAG,"Starting timer...");
         return START_STICKY
     }
 
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.i(TAG,"Countdown destroy")
         timer.cancel()
     }
 
@@ -108,11 +112,4 @@ class TimerService : Service() {
         return null
     }
 
-    companion object {
-        const val COUNTDOWN_BR = "com.example.mirea_kurs_4_sem.timer"
-        val intent = Intent(COUNTDOWN_BR)
-        const val NOTIFICATION_ID = 101
-        const val CHANNEL_ID = "1"
-        private val TAG = "TimerService"
-    }
 }

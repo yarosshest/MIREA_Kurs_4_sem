@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/recommendationFragment"
-        android:name="com.example.mirea_kurs_4_sem.RecommendationFragment"
+        android:name="com.example.mirea_kurs_4_sem.recommendation.RecommendationFragment"
         android:label="fragment_recommendation"
         tools:layout="@layout/fragment_recommendation" >
         <action
@@ -39,6 +39,7 @@
             app:popUpTo="@id/recommendationFragment" />
     </fragment>
     <fragment
+
         android:id="@+id/timerFragment"
         android:name="com.example.mirea_kurs_4_sem.timer.TimerFragment"
         android:label="fragment_timer"
